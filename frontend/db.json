@@ -1,5 +1,5 @@
 {
-    "POlineItems": [
+    "purchaseorders": [
         {
             "id": 1,
             "POnumber": 22000122,
@@ -118,7 +118,7 @@
             "shipTime": 84
         }
     ],
-    "Suppliers": [
+    "suppliers": [
         {
             "id": 1,
             "supplierID": 20300180,
@@ -153,7 +153,7 @@
             }
         }
     ],
-    "SKUcatalog": [
+    "skus": [
         {
             "id": 1,
             "SKU": "323-10030B",
@@ -226,7 +226,7 @@
             ]
         }
     ],
-    "Inventory": [
+    "inventory": [
         {
             "id": 1,
             "supplierID": 20300180,
