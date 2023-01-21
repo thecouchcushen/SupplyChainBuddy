@@ -1,121 +1,129 @@
 {
-    "purchaseorders": [
+    "pos": [
         {
             "id": 1,
             "POnumber": 22000122,
             "supplierID": 20300180,
-            "SKU": "323-21130A",
-            "price": 4.280,
-            "quantity": 18750,
-            "dueDate": "07/01/2023",
-            "status": "Confirmed",
-            "destination": "Geodis",
-            "shipMethod": "Truck",
-            "shipTime": 7
+            "lines": [
+                {
+                    "SKU": "323-21130A",
+                    "price": 4.280,
+                    "quantity": 18750,
+                    "dueDate": "07/01/2023",
+                    "status": "Confirmed",
+                    "destination": "Geodis",
+                    "shipMethod": "Truck",
+                    "shipTime": 7
+                },
+                {
+                    "SKU": "323-21130A",
+                    "price": 4.280,
+                    "quantity": 6250,
+                    "dueDate": "07/01/2023",
+                    "status": "Confirmed",
+                    "destination": "Shipmonk",
+                    "shipMethod": "Truck",
+                    "shipTime": 7
+                },
+                {
+                    "SKU": "323-21130",
+                    "price": 3.990,
+                    "quantity": 7500,
+                    "dueDate": "07/01/2023",
+                    "status": "Confirmed",
+                    "destination": "Geodis",
+                    "shipMethod": "Truck",
+                    "shipTime": 7
+                },
+                {
+                    "SKU": "323-21130",
+                    "price": 3.990,
+                    "quantity": 2500,
+                    "dueDate": "07/01/2023",
+                    "status": "Confirmed",
+                    "destination": "Shipmonk",
+                    "shipMethod": "Truck",
+                    "shipTime": 7
+                }
+            ]
         },
         {
             "id": 2,
-            "POnumber": 22000122,
-            "supplierID": 20300180,
-            "SKU": "323-21130A",
-            "price": 4.280,
-            "quantity": 6250,
-            "dueDate": "07/01/2023",
-            "status": "Confirmed",
-            "destination": "Shipmonk",
-            "shipMethod": "Truck",
-            "shipTime": 7
+            "POnumber": 22000026,
+            "supplierID": 2000819,
+            "lines": [
+                {
+                    "SKU": "323-21130P",
+                    "price": 0.88,
+                    "quantity": 8000,
+                    "dueDate": "01/17/2023",
+                    "status": "Complete",
+                    "destination": "Capsum",
+                    "shipMethod": "Air",
+                    "shipTime": 21
+                }
+            ]
         },
         {
             "id": 3,
-            "POnumber": 22000122,
-            "supplierID": 20300180,
-            "SKU": "323-21130",
-            "price": 3.990,
-            "quantity": 7500,
-            "dueDate": "07/01/2023",
-            "status": "Confirmed",
-            "destination": "Geodis",
-            "shipMethod": "Truck",
-            "shipTime": 7
+            "POnumber": 22000107,
+            "supplierID": 2006058,
+            "lines": [
+                {
+                    "SKU": "323-21130B",
+                    "price": 0.84,
+                    "quantity": 39200,
+                    "dueDate": "01/01/2023",
+                    "status": "Complete",
+                    "destination": "Capsum",
+                    "shipMethod": "Sea",
+                    "shipTime": 84
+                }
+            ]
         },
         {
             "id": 4,
-            "POnumber": 22000122,
-            "supplierID": 20300180,
-            "SKU": "323-21130",
-            "price": 3.990,
-            "quantity": 2500,
-            "dueDate": "07/01/2023",
-            "status": "Confirmed",
-            "destination": "Shipmonk",
-            "shipMethod": "Truck",
-            "shipTime": 7
+            "POnumber": 22000193,
+            "supplierID": 2006058,
+            "lines": [
+                {
+                    "SKU": "323-21130C",
+                    "price": 0.359,
+                    "quantity": 10000,
+                    "dueDate": "01/13/2022",
+                    "status": "Complete",
+                    "destination": "Capsum",
+                    "shipMethod": "Sea",
+                    "shipTime": 84
+                }
+            ]
         },
         {
             "id": 5,
-            "POnumber": 22000026,
-            "supplierID": 2000819,
-            "SKU": "323-21130P",
-            "price": 0.88,
-            "quantity": 8000,
-            "dueDate": "01/17/2023",
-            "status": "Complete",
-            "destination": "Capsum",
-            "shipMethod": "Air",
-            "shipTime": 21
-        },
-        {
-            "id": 6,
-            "POnumber": 22000107,
-            "supplierID": 2006058,
-            "SKU": "323-21130B",
-            "price": 0.84,
-            "quantity": 39200,
-            "dueDate": "01/01/2023",
-            "status": "Complete",
-            "destination": "Capsum",
-            "shipMethod": "Sea",
-            "shipTime": 84
-        },
-        {
-            "id": 7,
-            "POnumber": 22000193,
-            "supplierID": 2006058,
-            "SKU": "323-21130C",
-            "price": 0.359,
-            "quantity": 10000,
-            "dueDate": "01/13/2022",
-            "status": "Complete",
-            "destination": "Capsum",
-            "shipMethod": "Sea",
-            "shipTime": 84
-        },
-        {
-            "id": 8,
             "POnumber": 22000056,
             "supplierID": 2006058,
-            "SKU": "323-10030B",
-            "price": 0.97,
-            "quantity": 32004,
-            "dueDate": "01/01/2023",
-            "status": "Complete",
-            "destination": "Capsum",
-            "shipMethod": "Sea",
-            "shipTime": 84
-        },
-        {
-            "id": 9,
-            "POnumber": 22000056,
-            "supplierID": 2006058,
-            "SKU": "323-10030C",
-            "price": 0.83,
-            "quantity": 32076,
-            "dueDate": "01/01/2023",
-            "status": "Complete",
-            "destination": "Capsum",
-            "shipMethod": "Sea",
-            "shipTime": 84
+            "lines": [
+                {
+                    "SKU": "323-10030B",
+                    "price": 0.97,
+                    "quantity": 32004,
+                    "dueDate": "01/01/2023",
+                    "status": "Complete",
+                    "destination": "Capsum",
+                    "shipMethod": "Sea",
+                    "shipTime": 84
+                },
+                {
+                    "SKU": "323-10030C",
+                    "price": 0.83,
+                    "quantity": 32076,
+                    "dueDate": "01/01/2023",
+                    "status": "Complete",
+                    "destination": "Capsum",
+                    "shipMethod": "Sea",
+                    "shipTime": 84
+                }
+            ]
         }
     ],
     "suppliers": [
