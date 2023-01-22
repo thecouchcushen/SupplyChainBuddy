@@ -237,51 +237,43 @@
     "inventory": [
         {
             "id": 1,
-            "supplierID": 20300180,
-            "SKU": "323-10030B",
-            "quantity": 3930
-        },
-        {
-            "id": 2,
-            "supplierID": 20300180,
-            "SKU": "323-10030C",
-            "quantity": 1232
-        },
-        {
-            "id": 3,
-            "supplierID": 20300180,
-            "SKU": "323-10030PB",
-            "quantity": 37282
-        },
-        {
-            "id": 4,
-            "supplierID": 20300180,
-            "SKU": "323-10030PT",
-            "quantity": 37282
-        },
-        {
-            "id": 5,
-            "supplierID": 20300180,
-            "SKU": "323-21130B",
-            "quantity": 285
-        },
-        {
-            "id": 6,
-            "supplierID": 20300180,
-            "SKU": "323-21130C",
-            "quantity": 3976
-        },
-        {
-            "id": 7,
-            "supplierID": 20300180,
-            "SKU": "323-21130P",
-            "quantity": 11487
-        },
-        {
-            "id": 8,
-            "supplierID": 20300180,
-            "SKU": "323-21130AP",
-            "quantity": 34298
+            "description": "Capsum",
+            "warehouseID": 290,
+            "supplierID": 20300180, 
+            "inventoryLevels": [
+                {
+                    "SKU": "323-10030B",
+                    "quantity": 3930
+                },
+                {
+                    "SKU": "323-10030C",
+                    "quantity": 1232
+                },
+                {
+                    "SKU": "323-10030PB",
+                    "quantity": 37282
+                },
+                {
+                    "SKU": "323-10030PT",
+                    "quantity": 37282
+                },
+                {
+                    "SKU": "323-21130B",
+                    "quantity": 285
+                },
+                {
+                    "SKU": "323-21130C",
+                    "quantity": 3976
+                },
+                {
+                    "SKU": "323-21130P",
+                    "quantity": 11487
+                },
+                {
+                    "SKU": "323-21130AP",
+                    "quantity": 34298
+                }
+            ]
         }
     ]
 }
