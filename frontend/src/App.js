@@ -5,10 +5,10 @@ import poService from './services/pos'
 import skuService from './services/skus'
 import supplierService from  './services/suppliers'
 import inventoryService from './services/inventory'
-import Pos from './components/Pos';
-import SkuCatalog from './components/SKUs';
-import Suppliers from './components/Suppliers';
-import Inventory from './components/Inventory';
+import Pos from './components/PurchaseOrders/Pos';
+import SkuCatalog from './components/SkuCatalog/SKUs';
+import Suppliers from './components/Suppliers/Suppliers';
+import Inventory from './components/Inventory/Inventory';
 
 function App() {
   const [pos, setPos] = useState([])
@@ -20,7 +20,7 @@ function App() {
   useMount(() => supplierService.getAll().then(response => setSuppliers(response)))
   useMount(() => skuService.getAll().then(response => setSkus(response)))
   useMount(() => poService.getAll().then(response => setPos(response)))
-  console.log(inventory)
+  //console.log(inventory)
   //console.log(pos)
   //console.log(skus)
   return (
