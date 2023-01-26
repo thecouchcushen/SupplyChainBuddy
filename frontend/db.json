@@ -58,7 +58,7 @@
                     "quantity": 8000,
                     "dueDate": "01/17/2023",
                     "status": "Complete",
-                    "destination": "Capsum",
+                    "destination": 290,
                     "shipMethod": "Air",
                     "shipTime": 21
                 }
@@ -75,7 +75,7 @@
                     "quantity": 39200,
                     "dueDate": "01/01/2023",
                     "status": "Complete",
-                    "destination": "Capsum",
+                    "destination": 290,
                     "shipMethod": "Sea",
                     "shipTime": 84
                 }
@@ -92,7 +92,7 @@
                     "quantity": 10000,
                     "dueDate": "01/13/2022",
                     "status": "Complete",
-                    "destination": "Capsum",
+                    "destination": 290,
                     "shipMethod": "Sea",
                     "shipTime": 84
                 }
@@ -109,7 +109,7 @@
                     "quantity": 32004,
                     "dueDate": "01/01/2023",
                     "status": "Complete",
-                    "destination": "Capsum",
+                    "destination": 290,
                     "shipMethod": "Sea",
                     "shipTime": 84
                 },
@@ -119,7 +119,17 @@
                     "quantity": 32076,
                     "dueDate": "01/01/2023",
                     "status": "Complete",
-                    "destination": "Capsum",
+                    "destination": 290,
+                    "shipMethod": "Sea",
+                    "shipTime": 84
+                },
+                {
+                    "SKU": "323-10030C",
+                    "price": 0.83,
+                    "quantity": 400,
+                    "dueDate": "01/01/2023",
+                    "status": "Complete",
+                    "destination": 280,
                     "shipMethod": "Sea",
                     "shipTime": 84
                 }

@@ -9,6 +9,7 @@ import Pos from './components/PurchaseOrders/Pos';
 import SkuCatalog from './components/SkuCatalog/SKUs';
 import Suppliers from './components/Suppliers/Suppliers';
 import Inventory from './components/Inventory/Inventory';
+import FillPlan from './components/FillPlan/FillPlan';
 
 function App() {
   const [pos, setPos] = useState([])
@@ -34,6 +35,9 @@ function App() {
       <button onClick={() => setCurrentView("inventory")}>Inventory Levels</button>
       <button onClick={() => setCurrentView("suppliers")}>Supplier Catalog</button>
       <button onClick={() => setCurrentView("skus")}>SKU Catalog</button>
+
+      <FillPlan supplierEntry="" pos={pos} inventory={inventory} supplierID={20300180} warehouseID={290}/>
+
       <Pos key="PurchaseOrders" pos={pos} /> 
     </div>
     )
