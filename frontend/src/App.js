@@ -16,7 +16,7 @@ function App() {
   const [skus, setSkus] = useState([])
   const [suppliers, setSuppliers] = useState([])
   const [inventory, setInventory] = useState([])
-  const [currentView, setCurrentView] = useState("pos")
+  const [currentView, setCurrentView] = useState("fillplan")
 
   useMount(() => inventoryService.getAll().then(response => setInventory(response)))
   useMount(() => supplierService.getAll().then(response => setSuppliers(response)))
@@ -35,19 +35,31 @@ function App() {
       <button onClick={() => setCurrentView("inventory")}>Inventory Levels</button>
       <button onClick={() => setCurrentView("suppliers")}>Supplier Catalog</button>
       <button onClick={() => setCurrentView("skus")}>SKU Catalog</button>
-
-      <FillPlan supplierEntry="" pos={pos} inventory={inventory} supplierID={20300180} warehouseID={290}/>
+      <button onClick={() => setCurrentView("fillplan")}>Fill Plan</button>
 
       <Pos key="PurchaseOrders" pos={pos} /> 
     </div>
     )
-  } else if (currentView === "inventory") {
+  } else if (currentView === "fillplan") {
     return (
     <div>
       <button onClick={() => setCurrentView("pos")}>Purchase Orders</button>
       <button onClick={() => setCurrentView("inventory")}>Inventory Levels</button>
       <button onClick={() => setCurrentView("suppliers")}>Supplier Catalog</button>
       <button onClick={() => setCurrentView("skus")}>SKU Catalog</button>
+      <button onClick={() => setCurrentView("fillplan")}>Fill Plan</button>
+
+      <FillPlan supplierEntry="" pos={pos} inventory={inventory} supplierID={20300180} warehouseID={290}/>
+    </div>
+    )
+  }else if (currentView === "inventory") {
+    return (
+    <div>
+      <button onClick={() => setCurrentView("pos")}>Purchase Orders</button>
+      <button onClick={() => setCurrentView("inventory")}>Inventory Levels</button>
+      <button onClick={() => setCurrentView("suppliers")}>Supplier Catalog</button>
+      <button onClick={() => setCurrentView("skus")}>SKU Catalog</button>
+      <button onClick={() => setCurrentView("fillplan")}>Fill Plan</button>
       <Inventory key="InventoryLevels" inventory={inventory} /> 
     </div>
     )
@@ -58,6 +70,7 @@ function App() {
       <button onClick={() => setCurrentView("inventory")}>Inventory Levels</button>
       <button onClick={() => setCurrentView("suppliers")}>Supplier Catalog</button>
       <button onClick={() => setCurrentView("skus")}>SKU Catalog</button>
+      <button onClick={() => setCurrentView("fillplan")}>Fill Plan</button>
       <Suppliers key="SupplierCatalog" suppliers={suppliers} /> 
     </div>
     )
@@ -68,6 +81,7 @@ function App() {
       <button onClick={() => setCurrentView("inventory")}>Inventory Levels</button>
       <button onClick={() => setCurrentView("suppliers")}>Supplier Catalog</button>
       <button onClick={() => setCurrentView("skus")}>SKU Catalog</button>
+      <button onClick={() => setCurrentView("fillplan")}>Fill Plan</button>
       <SkuCatalog key="SkuCatalog"  skus={skus}/> 
     </div>
     )
