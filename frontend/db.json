@@ -2,8 +2,10 @@
     "pos": [
         {
             "id": 1,
+            "dateOpened": "09/15/2022",
             "POnumber": 22000122,
             "supplierID": 20300180,
+            "POtitle": "July S33+ Fill",
             "lines": [
                 {
                     "SKU": "323-21130A",
@@ -49,8 +51,10 @@
         },
         {
             "id": 2,
+            "dateOpened": "10/03/2022",
             "POnumber": 22000026,
             "supplierID": 2000819,
+            "POtitle": "S33+ Trays for July Fill",
             "lines": [
                 {
                     "SKU": "323-21130P",
@@ -66,8 +70,10 @@
         },
         {
             "id": 3,
+            "dateOpened": "10/14/2022",
             "POnumber": 22000107,
             "supplierID": 2006058,
+            "POtitle": "Capsule Bases for July S33+ Fill",
             "lines": [
                 {
                     "SKU": "323-21130B",
@@ -83,8 +89,10 @@
         },
         {
             "id": 4,
+            "dateOpened": "10/15/2022",
             "POnumber": 22000193,
             "supplierID": 2006058,
+            "POtitle": "Capsule Caps for July S33+ Fill",
             "lines": [
                 {
                     "SKU": "323-21130C",
@@ -100,8 +108,10 @@
         },
         {
             "id": 5,
+            "dateOpened": "09/27/2022",
             "POnumber": 22000056,
             "supplierID": 2006058,
+            "POtitle": "Primary Packaging Components for Capsum",
             "lines": [
                 {
                     "SKU": "323-10030B",

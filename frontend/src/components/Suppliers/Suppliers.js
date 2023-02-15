@@ -45,7 +45,7 @@ const Suppliers = ({suppliers}) => {
     */
     return (
         
-        <div className="ag-theme-alpine" style={{height: 800, width: 1200}}>
+        <div className="ag-theme-alpine" style={{height: 400, width: 1200}}>
             <AgGridReact
                 rowData={rowData}
                 columnDefs={columnDefs}>
