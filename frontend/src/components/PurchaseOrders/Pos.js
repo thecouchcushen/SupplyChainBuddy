@@ -5,8 +5,7 @@ import "./Pos.css"
 const Pos = ({ pos, suppliers }) => {
         
   const [displayPOdetails, setDisplayPOdetails] = useState(false)
-  console.log(displayPOdetails)
-  const poToDisplay = useState([])
+  const [poToDisplay, setPoToDisplay] = useState(pos[0])
 
   function getPOvalue(po) {
     let poValueArray = []
@@ -15,6 +14,11 @@ const Pos = ({ pos, suppliers }) => {
     )
     let poValue = poValueArray.reduce((partialSum, a) => partialSum + a, 0)
     return poValue
+  }
+
+  function displayPo(po) {
+    setDisplayPOdetails(true)
+    setPoToDisplay(po)
   }
 
   if (displayPOdetails === false) {
@@ -32,13 +36,20 @@ const Pos = ({ pos, suppliers }) => {
         {pos.map((po, i) => 
         <div className="rTableRow" key={po.POnumber + "row"}>
           <div className="rTableCell" key={po.POnumber + "date"}>{po.dateOpened}</div>
-          <div className="rTableCell" key={po.POnumber + "poNumber"}>{po.POnumber}</div>
+          <div className="rTableCell" key={po.POnumber + "poNumber"}><button onClick={() => displayPo(po)}>{po.POnumber}</button></div>
           <div className="rTableCell" key={po.POnumber + "supplierID"}>{po.supplierID}</div>
           <div className="rTableCell" key={po.POnumber + "supplierName"}>{suppliers.filter(supplier => supplier.supplierID === po.supplierID)[0].description}</div>
           <div className="rTableCell" key={po.POnumber + "description"}>{po.POtitle}</div>
-          <div className="rTableCell" key={po.POnumber + "value"}>{getPOvalue(po).toFixed(2)}</div>
+          <div className="rTableCell" key={po.POnumber + "value"}>${getPOvalue(po).toFixed(2)}</div>
         </div>
         )}
+      </div>
+    )
+  } else if (displayPOdetails === true) {
+    return (
+      <div>
+        <button onClick={() => setDisplayPOdetails(false)}>Back to PO Catalog</button>
+        <PurchaseOrder po={poToDisplay} />
       </div>
     )
   }
