@@ -27,7 +27,7 @@ function getData(suppliers) {
 const Suppliers = ({suppliers}) => {
 
     const rowData = getData(suppliers)
-    console.log(rowData);
+    //console.log(rowData);
 
     const [columnDefs] = useState([
     { field: "supplier" },
