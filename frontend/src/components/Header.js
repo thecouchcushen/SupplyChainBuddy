@@ -1,11 +1,15 @@
+import {
+    Button
+  } from '@chakra-ui/react'
+
 const Header = ({setCurrentView}) => {
     return (
         <div>
-            <button onClick={() => setCurrentView("pos")}>Purchase Orders</button>
-            <button onClick={() => setCurrentView("inventory")}>Inventory Levels</button>
-            <button onClick={() => setCurrentView("suppliers")}>Supplier Catalog</button>
-            <button onClick={() => setCurrentView("skus")}>SKU Catalog</button>
-            <button onClick={() => setCurrentView("fillplan")}>Fill Plan</button>
+            <Button colorScheme='green' m='2' onClick={() => setCurrentView("pos")}>Purchase Orders</Button>
+            <Button colorScheme='green' m='2' onClick={() => setCurrentView("inventory")}>Inventory Levels</Button>
+            <Button colorScheme='green' m='2' onClick={() => setCurrentView("suppliers")}>Supplier Catalog</Button>
+            <Button colorScheme='green' m='2' onClick={() => setCurrentView("skus")}>SKU Catalog</Button>
+            <Button colorScheme='green' m='2' onClick={() => setCurrentView("fillplan")}>Fill Plan</Button>
         </div>
     )
 }
