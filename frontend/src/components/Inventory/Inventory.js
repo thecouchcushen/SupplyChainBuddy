@@ -51,6 +51,14 @@ const Inventory = ({inventory}) => {
                         </Tr>
                         )}
                     </Tbody>
+                    <Tfoot>
+                        <Tr>
+                            <Th>Warehouse Description</Th>
+                            <Th>Warehouse ID</Th>
+                            <Th>Location</Th>
+                            <Th>Inventory Details</Th>
+                        </Tr>
+                    </Tfoot>
                 </Table>
             </TableContainer>
             
@@ -76,6 +84,12 @@ const Inventory = ({inventory}) => {
                             </Tr>
                             )}
                         </Tbody>
+                        <Tfoot>
+                            <Tr>
+                                <Th>SKU</Th>
+                                <Th>Quantity</Th>
+                            </Tr>
+                        </Tfoot>
                     </Table>
                 </TableContainer>
             </div>

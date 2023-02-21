@@ -85,7 +85,7 @@ const Suppliers = ({suppliers}) => {
                 </Thead>
                 <Tbody>
                     {suppliers.map((supplier, i) => 
-                    <Tr>
+                    <Tr key={supplier.description + "TableEntry"}>
                         <Td>{supplier.description}</Td>
                         <Td>{supplier.supplierID}</Td>
                         <Td>{supplier.description}</Td>
