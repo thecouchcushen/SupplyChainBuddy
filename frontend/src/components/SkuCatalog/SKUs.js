@@ -1,22 +1,11 @@
 import { useState } from "react";
-import {
-  Table,
-  Thead,
-  Tbody,
-  Tfoot,
-  Tr,
-  Th,
-  Td,
-  TableCaption,
-  TableContainer,
-  Button,
-} from '@chakra-ui/react'
 import SKUTable from "./SKUTable";
 import BOMTable from "./BOMTable";
 import IncludedInPO from "./IncludedInPO";
 import IncludedInBom from "./IncludedInBOM";
+import IncludedInWarehouse from "./IncludedInWarehouse";
 
-const SkuCatalog = ({ skus, pos }) => {
+const SkuCatalog = ({ skus, pos, warehouses }) => {
 
   const [dispSkuDetails, setDispSkuDetails] = useState(false)
   const [skuToDisplay, setSkuToDisplay] = useState("none")
@@ -41,6 +30,7 @@ const SkuCatalog = ({ skus, pos }) => {
         <BOMTable billOfMaterials={skuToDisplay.BOM}></BOMTable>
         <IncludedInBom skuToDisplay={skuToDisplay} skuCatalog={skus}></IncludedInBom>
         <IncludedInPO pos={pos} skuToDisplay={skuToDisplay}></IncludedInPO>
+        <IncludedInWarehouse warehouses={warehouses} skuToDisplay={skuToDisplay} ></IncludedInWarehouse>
         </div>
       )
     } 

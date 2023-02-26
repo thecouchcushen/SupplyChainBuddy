@@ -1,5 +1,5 @@
 import { useState } from "react";
-import PurchaseOrder from "./Po";
+import PurchaseOrder from "./PurchaseOrder";
 import "./Pos.css"
 
 import {
