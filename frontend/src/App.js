@@ -17,7 +17,7 @@ function App() {
   const [skus, setSkus] = useState([])
   const [suppliers, setSuppliers] = useState([])
   const [inventory, setInventory] = useState([])
-  const [currentView, setCurrentView] = useState("pos")
+  const [currentView, setCurrentView] = useState("skus")
 
   useMount(() => inventoryService.getAll().then(response => setInventory(response)))
   useMount(() => supplierService.getAll().then(response => setSuppliers(response)))
