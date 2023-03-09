@@ -18,18 +18,42 @@ import {
     Text
   } from '@chakra-ui/react'
 import { useState } from 'react'
+import { useMount } from 'react-use'
 
-const SKUForm = () => {
-
+const SKUForm = ({setPageToDisplay, formAction, skuToDisplay}) => {
     const [numberOfBOMItems, setNumberOfBOMItems] = useState(1)
-    console.log(numberOfBOMItems)
+    
+    const [targetSku, setTargetSku] = useState('')
+    const [targetDescription, setTargetDescription] = useState('')
+    const [targetBom, setTargetBom] = useState([])
+    
+    function handleCancelButton(formAction) {
+        if (formAction === "createNewSku") {
+            setPageToDisplay("skuCatalog")
+        } else if (formAction === "updateSku") {
+            setPageToDisplay("skuDetails")
+        }
+    }
+
+    function handleSubmitButton() {
+
+    }
+
+    useMount(() => {
+        if (formAction === "updateSku") {
+            setTargetSku(skuToDisplay.SKU)
+            setTargetDescription(skuToDisplay.description)
+            setTargetBom(skuToDisplay.BOM)
+        }
+    })
 
     function createBOMLines(numberOfLines) {
         const numberOfBOMItemsArray = Array.from(Array(parseInt(numberOfLines)).keys())
-        console.log(numberOfBOMItemsArray)
         return (numberOfBOMItemsArray.map(bomNumber => 
             <Tr key={"SKU" + bomNumber}>
-                    <Td><Input placeholder='SKU' /></Td>
+                    <Td>
+                        <Input placeholder='SKU' />
+                    </Td>
                     <Td></Td>
                     <Td>
                         <NumberInput defaultValue={0} precision={2} step={1} >
@@ -46,10 +70,16 @@ const SKUForm = () => {
         )
             
     }
+    
+    /*
+    console.log("Target Sku: ", targetSku)
+    console.log("TargetDescription: ", targetDescription)
+    console.log("Target BOM: ", targetBom)
+    */
 
         return (
             <div>
-                <TableContainer>
+                <TableContainer>    
                     <Table>
                         <Thead>
                             <Tr>
@@ -60,17 +90,31 @@ const SKUForm = () => {
                         </Thead>
                         <Tbody>
                             <Tr>
-                                <Td><Input placeholder='SKU'/></Td>
-                                <Td><Input placeholder='Item Description'/></Td>
                                 <Td>
-                                    <Button colorScheme='red' m={2}>Cancel</Button>
-                                    <Button colorScheme='green' m={2}>Submit</Button>
+                                    <Input 
+                                        placeholder='SKU' 
+                                        value={targetSku}
+                                        onChange={(event) => setTargetSku(event.target.value)}
+                                    />
+                                </Td>
+                                <Td>
+                                    <Input 
+                                        placeholder='Item Description'
+                                        value={targetDescription}
+                                        onChange={(event) => setTargetDescription(event.target.value)}
+                                    />
+                                </Td>
+                                <Td>
+                                    <Button colorScheme='red' m={2} onClick={() => handleCancelButton(formAction)}>Cancel</Button>
+                                    <Button colorScheme='green' m={2} onClick={() => handleSubmitButton()}>Submit</Button>
                                 </Td>
                             </Tr>
                         </Tbody>
                     </Table>
                 </TableContainer>
+
                 <Text>Number of Components:</Text>
+
                 <NumberInput value={numberOfBOMItems} step={1} min={0} maxW={125} onChange={value => setNumberOfBOMItems(value)}>
                     <NumberInputField />
                     <NumberInputStepper>
@@ -78,6 +122,7 @@ const SKUForm = () => {
                         <NumberDecrementStepper />
                     </NumberInputStepper>
                 </NumberInput>
+
                 <TableContainer>
                     <Table>
                         <Thead>
@@ -93,11 +138,9 @@ const SKUForm = () => {
                         </Tbody>
                     </Table>
                 </TableContainer>
+                
             </div>
         )
-    
-    
-
 }
 
 export default SKUForm

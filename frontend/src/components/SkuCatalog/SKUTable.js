@@ -12,16 +12,19 @@ import {
   } from '@chakra-ui/react'
 
 
-const SKUTable = ({skusInTable, buttonPressed, dispSkuDetails, setDispSkuDetails}) => {
+const SKUTable = ({skusInTable, detailButtonPressed, formDisplayHandler, pageToDisplay}) => {
     //console.log(skusInTable)
     function handleButtonDisp(sku) {
-        if (dispSkuDetails === false) {
+        if (pageToDisplay === "skuCatalog") {
             return (
-                <Button colorScheme='blue' onClick={() => buttonPressed(sku)}>Details</Button>
+                <Button colorScheme='blue' onClick={() => detailButtonPressed(sku)}>Details</Button>
             )
-        } else if (dispSkuDetails === true) {
+        } else if (pageToDisplay === "skuDetails") {
             return (
-                <Button colorScheme='blue' onClick={() => setDispSkuDetails(false)}>Return to Full List</Button>
+              <div>
+                <Button colorScheme='blue' m={2} onClick={() => formDisplayHandler()}>Edit</Button>
+                <Button colorScheme='red' m={2}>Delete</Button>
+                </div>
             )
         }
     }
