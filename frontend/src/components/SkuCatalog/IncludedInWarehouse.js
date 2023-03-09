@@ -43,7 +43,7 @@ const IncludedInWarehouse = ({warehouses, skuToDisplay}) => {
                         {
                         includedInWarehouse(warehouses, skuToDisplay).map(warehouse => 
                         <Tr key={warehouse.description + skuToDisplay.SKU + "Quantity"}>
-                            <Td>{warehouse.description}</Td>
+                            <Td><Button colorScheme='blue'>{warehouse.description}</Button></Td>
                             <Td>{warehouse.inventoryLevels.filter(inventoryLine => inventoryLine.SKU === skuToDisplay.SKU)[0].quantity}</Td>
                         </Tr>    
                         )
