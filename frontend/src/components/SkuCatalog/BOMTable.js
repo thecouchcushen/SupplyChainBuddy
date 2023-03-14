@@ -11,11 +11,15 @@ import {
     Button,
   } from '@chakra-ui/react'
 
-const BOMTable = ({billOfMaterials}) => {
+const BOMTable = ({billOfMaterials, skuCatalog}) => {
     //console.log(billOfMaterials)
     
     function bomZeroLength(billOfMaterials) {
         return (billOfMaterials.length === 0)
+    }
+
+    function handleUnitFind(bomLineSku, skuCatalog) {
+        return skuCatalog.filter(sku => sku.SKU === bomLineSku)[0].units
     }
 
     if (!bomZeroLength(billOfMaterials)) {
@@ -27,6 +31,7 @@ const BOMTable = ({billOfMaterials}) => {
                     <Tr>
                         <Th>SKU</Th>
                         <Th>Quantity</Th>
+                        <Th>Unit</Th>
                     </Tr>
                     </Thead>
                     <Tbody>
@@ -34,6 +39,7 @@ const BOMTable = ({billOfMaterials}) => {
                         <Tr key={"BOMitem" + bomLine.SKU}>
                         <Td>{bomLine.SKU}</Td>
                         <Td>{bomLine.quantity}</Td>
+                        <Td>{handleUnitFind(bomLine.SKU, skuCatalog)}</Td>
                         </Tr>
                         )}
                     </Tbody>

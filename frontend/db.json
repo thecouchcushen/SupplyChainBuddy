@@ -186,54 +186,63 @@
             "id": 1,
             "SKU": "323-10030B",
             "description": "30ml Glass Bottle Base",
+            "units": "ea",
             "BOM": []
         },
         {
             "id": 2,
             "SKU": "323-10030C",
             "description": "30ml Pump and Cap",
+            "units": "ea",
             "BOM": []
         },
         {
             "id": 3,
             "SKU": "323-10030PB",
             "description": "30ml Pulp - Bottom",
+            "units": "ea",
             "BOM": []
         },
         {
             "id": 4,
             "SKU": "323-10030PT",
             "description": "30ml Pulp - Top",
+            "units": "ea",
             "BOM": []
         },
         {
             "id": 5,
             "SKU": "323-21130AP",
             "description": "S33+ 30ml Sleeve",
+            "units": "ea",
             "BOM": []
         },
         {
             "id": 6,
             "SKU": "323-21130P",
             "description": "S33+ 30ml Tray",
+            "units": "ea",
             "BOM": []
         },
         {
             "id": 7,
             "SKU": "323-21130B",
             "description": "S33+ 30ml Capsule Base",
+            "units": "ea",
             "BOM": []
         },
         {
             "id": 8,
             "SKU": "323-21130C",
             "description": "S33+ 30ml Capsule Cap",
+            "units": "ea",
             "BOM": []
         },
         {
             "id": 9,
             "SKU": "323-21130",
             "description": "S33+ 30ml Refills",
+            "units": "ea",
             "BOM": [
                 {
                     "SKU": "323-21130P",
@@ -253,6 +262,7 @@
             "id": 10,
             "SKU": "323-21130A",
             "description": "S33+ 30ml Full Size Bottles",
+            "units": "ea",
             "BOM": [
                 {
                     "SKU": "323-21130AP",

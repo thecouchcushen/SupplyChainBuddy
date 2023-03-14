@@ -43,7 +43,7 @@ const SkuCatalog = ({ skus, pos, warehouses }) => {
         <div>
         <Button colorScheme='blue' m={2} onClick={() => setPageToDisplay("skuCatalog")}>Return to Full Catalog</Button>
         <SKUTable skusInTable={[skuToDisplay]} detailButtonPressed={detailButtonPressed} pageToDisplay={pageToDisplay} formDisplayHandler={formDisplayHandler}></SKUTable>
-        <BOMTable billOfMaterials={skuToDisplay.BOM}></BOMTable>
+        <BOMTable billOfMaterials={skuToDisplay.BOM} skuCatalog={skus}></BOMTable>
         <IncludedInBom skuToDisplay={skuToDisplay} skuCatalog={skus}></IncludedInBom>
         <IncludedInPO pos={pos} skuToDisplay={skuToDisplay}></IncludedInPO>
         <IncludedInWarehouse warehouses={warehouses} skuToDisplay={skuToDisplay} ></IncludedInWarehouse>
@@ -53,7 +53,7 @@ const SkuCatalog = ({ skus, pos, warehouses }) => {
     } else if (pageToDisplay === "SkuForm") {
       return (
         <div>
-        <SKUForm setPageToDisplay={setPageToDisplay} formAction={formAction} skuToDisplay={skuToDisplay}></SKUForm>
+        <SKUForm setPageToDisplay={setPageToDisplay} formAction={formAction} skuToDisplay={skuToDisplay} skuCatalog={skus}></SKUForm>
         </div>
       )
     }

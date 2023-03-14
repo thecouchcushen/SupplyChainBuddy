@@ -11,7 +11,8 @@ import {
     Button,
   } from '@chakra-ui/react'
 
-
+//TODO: Only display 10 skus at a time, implement navigation between pages
+//TODO: Implement filtering
 const SKUTable = ({skusInTable, detailButtonPressed, formDisplayHandler, pageToDisplay}) => {
     //console.log(skusInTable)
     function handleButtonDisp(sku) {
@@ -23,6 +24,7 @@ const SKUTable = ({skusInTable, detailButtonPressed, formDisplayHandler, pageToD
             return (
               <div>
                 <Button colorScheme='blue' m={2} onClick={() => formDisplayHandler()}>Edit</Button>
+                {/* TODO: Implement delete function*/}
                 <Button colorScheme='red' m={2}>Delete</Button>
                 </div>
             )
@@ -41,7 +43,7 @@ const SKUTable = ({skusInTable, detailButtonPressed, formDisplayHandler, pageToD
               </Tr>
             </Thead>
             <Tbody>
-              {skusInTable.map((sku, i) => 
+              {skusInTable.filter(sku => sku.SKU !== '').map((sku, i) => 
               <Tr key={sku.description + "CatalogEntry"}>
                 <Td>{sku.SKU}</Td>
                 <Td>{sku.description}</Td>
