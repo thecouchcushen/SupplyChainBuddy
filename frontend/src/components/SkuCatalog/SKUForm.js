@@ -47,6 +47,13 @@ const SKUForm = ({setPageToDisplay, formAction, skuToDisplay, skuCatalog}) => {
         
     })
 
+    const reactSelectStyles = {
+        menuPortal: base => ({
+          ...base,
+          zIndex: 9999,
+        }),
+      }
+
     // Handle cancel button to return to previous page
     function handleCancelButton(formAction) {
         if (formAction === "createNewSku") {
@@ -125,7 +132,25 @@ const SKUForm = ({setPageToDisplay, formAction, skuToDisplay, skuCatalog}) => {
         //console.log(targetBom)
     }
 
+    function handleSelectChange(option, index, column) {
+        console.log(option)
+        const newTargetBom = [...targetBom]
+        newTargetBom[index][column] = option.value
+        if (column === "SKU" && index === newTargetBom.length - 1) {
+            newTargetBom.push({"SKU": "", "quantity": 0})
+        }
+        setTargetBom(newTargetBom)
+    }
 
+    function getSkuCatalogArray(skuCatalog) {
+        let tempSelectOptionsArray = []
+        for (const sku of skuCatalog) {
+            tempSelectOptionsArray.push({"label": sku.SKU, "value": sku.SKU})
+        }
+        const selectOptionsArray = tempSelectOptionsArray
+        return selectOptionsArray
+    }
+    //console.log(getSkuCatalogArray(skuCatalog))
 
     //Finds the description of a SKU from the SKucatalog and the SKU
     function handleDescriptionFind(bomLineSku, allSkus) {
@@ -195,11 +220,15 @@ const SKUForm = ({setPageToDisplay, formAction, skuToDisplay, skuCatalog}) => {
                                 <Tr key={"BomLine" + index}>
                                     {/*console.log(bomLine)*/}
                                     <Td>
-                                        {/*TODO: Port this to REACT-SELECT Module and fix any arising issues */}
-                                        <Input 
+                                        {/* The styles, menuPortalTarget, and menuPosition props ensure that the dropdown menu isnt cut off by the parent container (an issue I was running into)*/}
+                                        <Select 
                                             placeholder='SKU'
-                                            value={bomLine.SKU}
-                                            onChange={(event) => handleInputChange(event, index, "SKU")}
+                                            value={{"label": bomLine.SKU, "value": bomLine.SKU}}
+                                            onChange={(option) => handleSelectChange(option, index, "SKU")}
+                                            options={getSkuCatalogArray(skuCatalog)}
+                                            styles={reactSelectStyles}
+                                            menuPortalTarget={document.body}
+                                            menuPosition={'fixed'}
                                         />
                                     </Td>
                                     <Td>{handleDescriptionFind(bomLine.SKU, skuCatalog)}</Td>
