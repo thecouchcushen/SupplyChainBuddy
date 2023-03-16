@@ -7,7 +7,7 @@ import IncludedInWarehouse from "./IncludedInWarehouse";
 import SKUForm from "./SKUForm";
 import { Button } from '@chakra-ui/react' 
 
-const SkuCatalog = ({ skus, pos, warehouses }) => {
+const SkuCatalog = ({ skus, setSkus, pos, warehouses }) => {
   const [pageToDisplay, setPageToDisplay] = useState("skuCatalog")
   const [skuToDisplay, setSkuToDisplay] = useState("none")
   const [formAction, setFormAction] = useState("createNewSku")
@@ -39,7 +39,7 @@ const SkuCatalog = ({ skus, pos, warehouses }) => {
     //Sku is selected
     else if (pageToDisplay === "skuDetails") {
       //console.log(skuToDisplay.BOM)
-      console.log("skUToDisplay", skuToDisplay)
+      //console.log("skUToDisplay", skuToDisplay)
       return (
         <div>
         <Button colorScheme='blue' m={2} onClick={() => setPageToDisplay("skuCatalog")}>Return to Full Catalog</Button>
@@ -54,7 +54,7 @@ const SkuCatalog = ({ skus, pos, warehouses }) => {
     } else if (pageToDisplay === "SkuForm") {
       return (
         <div>
-        <SKUForm setPageToDisplay={setPageToDisplay} formAction={formAction} skuToDisplay={skuToDisplay} setSkuToDisplay={setSkuToDisplay} skuCatalog={skus}></SKUForm>
+        <SKUForm setPageToDisplay={setPageToDisplay} formAction={formAction} skuToDisplay={skuToDisplay} setSkuToDisplay={setSkuToDisplay} skuCatalog={skus} setSkuCatalog={setSkus}></SKUForm>
         </div>
       )
     }

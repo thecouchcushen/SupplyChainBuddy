@@ -61,7 +61,7 @@ function App() {
     return (
     <div>
       <Header setCurrentView={setCurrentView} />
-      <SkuCatalog key="SkuCatalog"  skus={skus} pos={pos} warehouses={inventory} /> 
+      <SkuCatalog key="SkuCatalog"  skus={skus} setSkus={setSkus} pos={pos} warehouses={inventory} /> 
     </div>
     )
   }

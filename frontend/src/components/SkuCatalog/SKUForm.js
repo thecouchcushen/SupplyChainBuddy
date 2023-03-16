@@ -17,19 +17,19 @@ import {
     NumberDecrementStepper,
     Text
   } from '@chakra-ui/react'
-import { useCallback, useState } from 'react'
+import { useState } from 'react'
 import { useMount } from 'react-use'
-import { Select } from "chakra-react-select"
-import skuService from '../../services/skus'
+import { Select, CreatableSelect } from "chakra-react-select"
+import axios from 'axios'
 
-//TODO: Add units to form in a creatable react select element
-const SKUForm = ({setPageToDisplay, formAction, skuToDisplay, skuCatalog}) => {
+const SKUForm = ({setPageToDisplay, formAction, skuToDisplay, skuCatalog, setSkuCatalog}) => {
     
     // Establishes state variables
     
     //const [numberOfBOMItems, setNumberOfBOMItems] = useState(1)
     const [targetSku, setTargetSku] = useState('')
     const [targetDescription, setTargetDescription] = useState('')
+    const [targetUnit, setTargetUnit] = useState('')
     const [targetBom, setTargetBom] = useState([{"SKU": '', "quantity": 0}])
 
     // State variables to track the validation status of each input field
@@ -37,12 +37,14 @@ const SKUForm = ({setPageToDisplay, formAction, skuToDisplay, skuCatalog}) => {
     const [targetSkuError, setTargetSkuError] = useState(false);
     const [targetDescriptionError, setTargetDescriptionError] = useState(false);
     const [targetBomError, setTargetBomError] = useState(false);
+    const [targetUnitError, setTargetUnitError] = useState(false);
     
     // Mounts state variables on first render if being accessed by Update instead of creating an entire new SKU. This will pass the existing information from the SKU
     useMount(() => {
         if (formAction === "updateSku") {
             setTargetSku(skuToDisplay.SKU)
             setTargetDescription(skuToDisplay.description)
+            setTargetUnit(skuToDisplay.units)
             let tempBom = []
             skuToDisplay.BOM.map((bomLine, index) => tempBom.splice(index, 0, {SKU: bomLine.SKU, quantity: bomLine.quantity}))
             setTargetBom([...tempBom, {"SKU": '', "quantity": 0}])
@@ -94,13 +96,22 @@ const SKUForm = ({setPageToDisplay, formAction, skuToDisplay, skuCatalog}) => {
         } else {
             setTargetDescriptionError(false)
         }
+
+        //TargetUnit error handling - unit cannot be blank
+        if (targetUnit === '') {
+            setTargetUnitError(true)
+            hasError = true
+        } else {
+            setTargetUnitError(false)
+        }
+
         /*BOM error handling
         Implement BOM error handling - BOM either has to be NULL OR every item in BOM has a quantity is greater than 0. 
         */
         let targetBomToSubmit = [...targetBom]
         targetBomToSubmit.splice(targetBom.length - 1, 1)
         //console.log(targetBomToSubmit)
-        
+
         const arrayOfQuantities = targetBomToSubmit.map(bomLine => bomLine.quantity)
         const arrayOfSkus = targetBomToSubmit.map(bomLine => bomLine.SKU)
         //console.log('arrayOfQuantities', arrayOfQuantities)
@@ -114,14 +125,29 @@ const SKUForm = ({setPageToDisplay, formAction, skuToDisplay, skuCatalog}) => {
         }
 
         if (!hasError) {
-            console.log("submitting form...");
-            console.log(targetBomToSubmit)
+            console.log("submitting form...")
+            let submissionObject = {
+                SKU: targetSku,
+                description: targetDescription,
+                units: targetUnit,
+                BOM: targetBomToSubmit
+            }
+            //console.log(submissionObject)
+            //TODO: Use skuService here
+            if (formAction === "createNewSku") {
+                axios.post("http://localhost:3001/skus", submissionObject).then(response => setSkuCatalog(skuCatalog.concat(response.data)))
+                setPageToDisplay("skuCatalog")
+            } else if (formAction === "updateSku") {
+                
+            }
 
         } else {
             console.log("hasError: ", hasError)
             console.log("Sku Error: ", targetSkuError )            
             console.log("Desc. Error: ", targetDescriptionError);
             console.log("BOM Error: ", targetBomError)
+            console.log("Unit error: ", targetUnitError)
+
         }
     }
 
@@ -135,18 +161,6 @@ const SKUForm = ({setPageToDisplay, formAction, skuToDisplay, skuCatalog}) => {
             setTargetBom(newTargetBom)
         }
     }
-
-    /* Old input handler
-    // Handles changes to the inputs in the BOM table. Adds new lines if last line is filled out
-    function handleInputChange(event, index, column) {
-        const newTargetBom = [...targetBom]
-        newTargetBom[index][column] = event.target.value
-        if (column === "SKU" && index === newTargetBom.length - 1) {
-            newTargetBom.push({"SKU": "", "quantity": 0})
-        }
-        setTargetBom(newTargetBom)
-    }
-    */
     
     function handleNumberInputChange(bomLineSku, value) {
         let newBom = [...targetBom]
@@ -164,9 +178,18 @@ const SKUForm = ({setPageToDisplay, formAction, skuToDisplay, skuCatalog}) => {
             newTargetBom.push({"SKU": "", "quantity": 0})
         }
         //const arrayOfSkus = targetBom.map(bomLine => bomLine.SKU)
-        
         setTargetBom(newTargetBom)
     }
+
+    function getUnitArray(skuCatalog) {
+        let unitArray = []
+        skuCatalog.map(sku => unitArray.push(sku.units))
+        let uniqueUnitArray = [...new Set(unitArray)]
+        let uniqueUnitArrayOfObjects = uniqueUnitArray.map(uniqueUnit => ({label: uniqueUnit, value: uniqueUnit}))
+        return uniqueUnitArrayOfObjects
+    }
+
+    
 
     function getSkuCatalogArray(skuCatalog, targetBom) {
         let tempTargetBom = targetBom.map(sku => sku.SKU)
@@ -199,6 +222,7 @@ const SKUForm = ({setPageToDisplay, formAction, skuToDisplay, skuCatalog}) => {
                             <Tr>
                                 <Th>SKU</Th>
                                 <Th>Description</Th>
+                                <Th>Units</Th>
                                 <Th></Th>
                             </Tr>
                         </Thead>
@@ -216,6 +240,19 @@ const SKUForm = ({setPageToDisplay, formAction, skuToDisplay, skuCatalog}) => {
                                         placeholder='Item Description'
                                         value={targetDescription}
                                         onChange={(event) => setTargetDescription(event.target.value)}
+                                    />
+                                </Td>
+                                <Td>
+                                    <CreatableSelect
+                                        placeholder='units'
+                                        value={{"label": targetUnit, "value": targetUnit}}
+                                        onChange={(option) => setTargetUnit(option.value)}
+                                        onCreateOption={(option) => setTargetUnit(option)}
+                                        options={getUnitArray(skuCatalog)}
+                                        styles={reactSelectStyles}
+                                        menuPortalTarget={document.body}
+                                        menuPosition={'fixed'}
+                                    
                                     />
                                 </Td>
                                 <Td>
