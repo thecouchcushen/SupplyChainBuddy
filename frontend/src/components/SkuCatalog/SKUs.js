@@ -39,6 +39,7 @@ const SkuCatalog = ({ skus, pos, warehouses }) => {
     //Sku is selected
     else if (pageToDisplay === "skuDetails") {
       //console.log(skuToDisplay.BOM)
+      console.log("skUToDisplay", skuToDisplay)
       return (
         <div>
         <Button colorScheme='blue' m={2} onClick={() => setPageToDisplay("skuCatalog")}>Return to Full Catalog</Button>
@@ -53,7 +54,7 @@ const SkuCatalog = ({ skus, pos, warehouses }) => {
     } else if (pageToDisplay === "SkuForm") {
       return (
         <div>
-        <SKUForm setPageToDisplay={setPageToDisplay} formAction={formAction} skuToDisplay={skuToDisplay} skuCatalog={skus}></SKUForm>
+        <SKUForm setPageToDisplay={setPageToDisplay} formAction={formAction} skuToDisplay={skuToDisplay} setSkuToDisplay={setSkuToDisplay} skuCatalog={skus}></SKUForm>
         </div>
       )
     }

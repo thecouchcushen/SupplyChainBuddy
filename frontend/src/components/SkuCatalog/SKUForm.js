@@ -19,9 +19,10 @@ import {
   } from '@chakra-ui/react'
 import { useCallback, useState } from 'react'
 import { useMount } from 'react-use'
-import { Select } from "chakra-react-select";
+import { Select } from "chakra-react-select"
+import skuService from '../../services/skus'
 
-
+//TODO: Add units to form in a creatable react select element
 const SKUForm = ({setPageToDisplay, formAction, skuToDisplay, skuCatalog}) => {
     
     // Establishes state variables
@@ -42,17 +43,20 @@ const SKUForm = ({setPageToDisplay, formAction, skuToDisplay, skuCatalog}) => {
         if (formAction === "updateSku") {
             setTargetSku(skuToDisplay.SKU)
             setTargetDescription(skuToDisplay.description)
-            setTargetBom([...skuToDisplay.BOM, {"SKU": '', "quantity": 0}])
+            let tempBom = []
+            skuToDisplay.BOM.map((bomLine, index) => tempBom.splice(index, 0, {SKU: bomLine.SKU, quantity: bomLine.quantity}))
+            setTargetBom([...tempBom, {"SKU": '', "quantity": 0}])
         }
         
     })
 
+    //Style for react-select component that ensures dropdown menu is on top of every element and is not bounded by the parent container
     const reactSelectStyles = {
         menuPortal: base => ({
           ...base,
           zIndex: 9999,
         }),
-      }
+    }
 
     // Handle cancel button to return to previous page
     function handleCancelButton(formAction) {
@@ -61,6 +65,7 @@ const SKUForm = ({setPageToDisplay, formAction, skuToDisplay, skuCatalog}) => {
         } else if (formAction === "updateSku") {
             setPageToDisplay("skuDetails")
         }
+        
     }
 
     //TODO: Implement submit for create/update to the server
@@ -89,11 +94,29 @@ const SKUForm = ({setPageToDisplay, formAction, skuToDisplay, skuCatalog}) => {
         } else {
             setTargetDescriptionError(false)
         }
-        //BOM error handling (NOT IMPLEMENTED)
-        //TODO: Implement BOM error handling - BOM either has to be NULL OR every item in BOM is a SKU that already exists and the quantity is greater than 0. BOM Cant have one SKU multiple times
+        /*BOM error handling
+        Implement BOM error handling - BOM either has to be NULL OR every item in BOM has a quantity is greater than 0. 
+        */
+        let targetBomToSubmit = [...targetBom]
+        targetBomToSubmit.splice(targetBom.length - 1, 1)
+        //console.log(targetBomToSubmit)
+        
+        const arrayOfQuantities = targetBomToSubmit.map(bomLine => bomLine.quantity)
+        const arrayOfSkus = targetBomToSubmit.map(bomLine => bomLine.SKU)
+        //console.log('arrayOfQuantities', arrayOfQuantities)
+        //console.log('arrayOfSkus', arrayOfSkus)
+
+        if (targetBomToSubmit.length === 0 || (arrayOfQuantities.every(el => el > 0) && !arrayOfSkus.includes(targetSku)) ) {
+            setTargetBomError(false)
+        } else {
+            setTargetBomError(true)
+            hasError = true
+        }
 
         if (!hasError) {
             console.log("submitting form...");
+            console.log(targetBomToSubmit)
+
         } else {
             console.log("hasError: ", hasError)
             console.log("Sku Error: ", targetSkuError )            
@@ -113,6 +136,7 @@ const SKUForm = ({setPageToDisplay, formAction, skuToDisplay, skuCatalog}) => {
         }
     }
 
+    /* Old input handler
     // Handles changes to the inputs in the BOM table. Adds new lines if last line is filled out
     function handleInputChange(event, index, column) {
         const newTargetBom = [...targetBom]
@@ -122,7 +146,7 @@ const SKUForm = ({setPageToDisplay, formAction, skuToDisplay, skuCatalog}) => {
         }
         setTargetBom(newTargetBom)
     }
-
+    */
     
     function handleNumberInputChange(bomLineSku, value) {
         let newBom = [...targetBom]
@@ -131,23 +155,24 @@ const SKUForm = ({setPageToDisplay, formAction, skuToDisplay, skuCatalog}) => {
         setTargetBom(newBom)
         //console.log(targetBom)
     }
-
+    
     function handleSelectChange(option, index, column) {
-        console.log(option)
+        //console.log(option)
         const newTargetBom = [...targetBom]
         newTargetBom[index][column] = option.value
         if (column === "SKU" && index === newTargetBom.length - 1) {
             newTargetBom.push({"SKU": "", "quantity": 0})
         }
+        //const arrayOfSkus = targetBom.map(bomLine => bomLine.SKU)
+        
         setTargetBom(newTargetBom)
     }
 
-    function getSkuCatalogArray(skuCatalog) {
-        let tempSelectOptionsArray = []
-        for (const sku of skuCatalog) {
-            tempSelectOptionsArray.push({"label": sku.SKU, "value": sku.SKU})
-        }
-        const selectOptionsArray = tempSelectOptionsArray
+    function getSkuCatalogArray(skuCatalog, targetBom) {
+        let tempTargetBom = targetBom.map(sku => sku.SKU)
+        //BOM Cant have one SKU multiple times. Cant have targetSku as a bomItem
+        let tempSkuCatalog = skuCatalog.filter(sku => !tempTargetBom.includes(sku.SKU)).filter(sku => targetSku !== sku.SKU)
+        const selectOptionsArray = tempSkuCatalog.map(sku => ({label: sku.SKU, value: sku.SKU}))
         return selectOptionsArray
     }
     //console.log(getSkuCatalogArray(skuCatalog))
@@ -225,7 +250,7 @@ const SKUForm = ({setPageToDisplay, formAction, skuToDisplay, skuCatalog}) => {
                                             placeholder='SKU'
                                             value={{"label": bomLine.SKU, "value": bomLine.SKU}}
                                             onChange={(option) => handleSelectChange(option, index, "SKU")}
-                                            options={getSkuCatalogArray(skuCatalog)}
+                                            options={getSkuCatalogArray(skuCatalog,targetBom)}
                                             styles={reactSelectStyles}
                                             menuPortalTarget={document.body}
                                             menuPosition={'fixed'}
@@ -237,7 +262,8 @@ const SKUForm = ({setPageToDisplay, formAction, skuToDisplay, skuCatalog}) => {
                                             value={bomLine.quantity}
                                             onChange={value => handleNumberInputChange(bomLine.SKU, value)}
                                             precision={2} 
-                                            step={1} >
+                                            step={1} 
+                                            min={0} >
                                             <NumberInputField />
                                             <NumberInputStepper>
                                                 <NumberIncrementStepper />
