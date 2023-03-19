@@ -32,7 +32,7 @@ const SkuCatalog = ({ skus, setSkus, pos, warehouses }) => {
       return (
         <div>
           <Button colorScheme='blue' m={2} onClick={() => formDisplayHandler()}>New SKU</Button>
-          <SKUTable skusInTable={skus} detailButtonPressed={detailButtonPressed} pageToDisplay={pageToDisplay} setPageToDisplay={setPageToDisplay}></SKUTable>
+          <SKUTable skusInTable={skus} setSkuCatalog={setSkus} detailButtonPressed={detailButtonPressed} pageToDisplay={pageToDisplay} setPageToDisplay={setPageToDisplay} warehouses={warehouses} pos={pos} skuCatalog={skus}></SKUTable>
         </div>
       )
     } 
@@ -43,7 +43,7 @@ const SkuCatalog = ({ skus, setSkus, pos, warehouses }) => {
       return (
         <div>
         <Button colorScheme='blue' m={2} onClick={() => setPageToDisplay("skuCatalog")}>Return to Full Catalog</Button>
-        <SKUTable skusInTable={[skuToDisplay]} detailButtonPressed={detailButtonPressed} pageToDisplay={pageToDisplay} formDisplayHandler={formDisplayHandler}></SKUTable>
+        <SKUTable skusInTable={[skuToDisplay]} setSkuCatalog={setSkus} detailButtonPressed={detailButtonPressed} pageToDisplay={pageToDisplay} setPageToDisplay={setPageToDisplay} formDisplayHandler={formDisplayHandler} warehouses={warehouses} pos={pos} skuCatalog={skus}></SKUTable>
         <BOMTable billOfMaterials={skuToDisplay.BOM} skuCatalog={skus}></BOMTable>
         <IncludedInBom skuToDisplay={skuToDisplay} skuCatalog={skus}></IncludedInBom>
         <IncludedInPO pos={pos} skuToDisplay={skuToDisplay}></IncludedInPO>

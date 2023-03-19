@@ -17,7 +17,6 @@ import { useState } from "react"
 /*
 inventory.map((warehouse, i) => <Warehouse key={"Warehouse" + warehouse.warehouseID} warehouse={warehouse} /> )
 */
-
 const Inventory = ({inventory}) => {
 
     const [displayWarehouseDetails, setDisplayWarehouseDetails] = useState(false)
