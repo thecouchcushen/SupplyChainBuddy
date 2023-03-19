@@ -31,6 +31,7 @@ const IncludedInWarehouse = ({warehouses, skuToDisplay}) => {
 
     if (!includedInWarehouseZeroLength(warehouses, skuToDisplay)) {
         return (
+            //TODO: Warehouse should be clickable and take you to the warehouse page
             <TableContainer>
                 <Table>
                     <Thead>

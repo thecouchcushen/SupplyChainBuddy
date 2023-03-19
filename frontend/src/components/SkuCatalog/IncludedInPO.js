@@ -30,6 +30,7 @@ const IncludedInPO = ({pos, skuToDisplay}) => {
     }
 
     if (!includedInPoZeroLength(pos, skuToDisplay)) {
+        //TODO: PONumber should be clickable and take you to the PO in the POtable
         return (
             <TableContainer>
             <Table>

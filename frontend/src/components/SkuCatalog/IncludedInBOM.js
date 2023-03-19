@@ -30,6 +30,7 @@ const IncludedInBom = ({skuToDisplay, skuCatalog}) => {
     }
 
     if (!includedInBomZeroLength(skuCatalog, skuToDisplay)) {
+        //TODO: SKUs in BOM should be clickable and display that SKU's details
         return (
             <TableContainer>
                 <Table>

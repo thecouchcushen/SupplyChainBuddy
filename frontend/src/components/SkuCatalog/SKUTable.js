@@ -13,6 +13,7 @@ import {
 
 //TODO: Only display 10 skus at a time, implement navigation between pages
 //TODO: Implement filtering
+//TODO: Display units
 const SKUTable = ({skusInTable, detailButtonPressed, formDisplayHandler, pageToDisplay}) => {
     //console.log(skusInTable)
     function handleButtonDisp(sku) {

@@ -23,6 +23,7 @@ const BOMTable = ({billOfMaterials, skuCatalog}) => {
     }
 
     if (!bomZeroLength(billOfMaterials)) {
+        //TODO: SKUs in BOM should be clickable and display that SKU's details
         return (
             <TableContainer>
                 <Table>
