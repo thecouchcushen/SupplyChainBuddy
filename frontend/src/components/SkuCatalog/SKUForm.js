@@ -20,7 +20,6 @@ import {
 import { useState } from 'react'
 import { useMount } from 'react-use'
 import { Select, CreatableSelect } from "chakra-react-select"
-import axios from 'axios'
 import skuService from '../../services/skus'
 
 const SKUForm = ({setPageToDisplay, formAction, skuToDisplay, setSkuToDisplay, skuCatalog, setSkuCatalog}) => {
@@ -35,7 +34,6 @@ const SKUForm = ({setPageToDisplay, formAction, skuToDisplay, setSkuToDisplay, s
     const [targetBom, setTargetBom] = useState([{"SKU": '', "quantity": 0}])
 
     // State variables to track the validation status of each input field
-    // TODO: Conditional formatting/rendering to display errors if any of these are TRUE
     const [targetSkuError, setTargetSkuError] = useState(false);
     const [targetDescriptionError, setTargetDescriptionError] = useState(false);
     const [targetBomError, setTargetBomError] = useState(false);
@@ -73,43 +71,32 @@ const SKUForm = ({setPageToDisplay, formAction, skuToDisplay, setSkuToDisplay, s
         
     }
 
-    function handleSubmitButton() {
-        let hasError = false
-        
-        /*  TargetSKU error handling:
-            If update: validate that the targetSKU is equal to the original SKU to display
-            If create: validate that the targetSKU does not already exist in the SKUcatalog
-            For both, validate that the length of the targetSKu is not 0
-        */
+    //The following 4 functions check the validity of the inputs to submit the form. They are taken out so that the validation/error message handling can be processed properly (although there may be a more efficient way to handle it). The errors only display if the targetXXXerror is TRUE and the checkXXXvalidity function is TRUE. this is because the targetXXXerror is only true if the FORM HAS BEEN SUBMITTED - and the checkXXXvalidity function will continuosly check if the error is still valid (i.e. if the user has updated the input after submission and fixed the error, then the error should disappear - but targetXXXerror will still be true because they havent submitted the form yet so the function needs to continuously check)
+    function checkSkuValidity() {
         if (targetSku === '' || (targetSku !== skuToDisplay.SKU && formAction === "updateSku") || (skuCatalog.filter(skuObject => skuObject.SKU === targetSku).length > 0 && formAction === "createNewSku")) {
-            setTargetSkuError(true)
-            hasError = true
+            return true
         } else {
-            setTargetSkuError(false)
+            return false
         }
-        /*  TargetDescription error handling
-            If update: validate that the target description is EITHER the same one that you are starting with or if it is different, it cannot be the same as any other description in the catalog
-            If create: validate that the descipriton is not the same as any other description in the catalog
-            for both, validate that the length of the description is not 0
-        */
+    }
+
+    function checkDescriptionValidity() {
         if (targetDescription === '' || (targetDescription !== skuToDisplay.description && skuCatalog.filter(skuObject => skuObject.description === targetDescription).length > 0 && formAction === "updateSku") || (skuCatalog.filter(skuObject => skuObject.description === targetDescription).length > 0 && formAction === "createNewSku")) {
-            setTargetDescriptionError(true)
-            hasError = true
+            return true
         } else {
-            setTargetDescriptionError(false)
+            return false
         }
-
-        //TargetUnit error handling - unit cannot be blank
+    }
+    
+    function checkUnitValidity() {
         if (targetUnit === '') {
-            setTargetUnitError(true)
-            hasError = true
+            return true
         } else {
-            setTargetUnitError(false)
+            return false
         }
+    }
 
-        /*BOM error handling
-        Implement BOM error handling - BOM either has to be NULL OR every item in BOM has a quantity is greater than 0. 
-        */
+    function checkBomValidity() {
         let targetBomToSubmit = [...targetBom]
         targetBomToSubmit.splice(targetBom.length - 1, 1)
         //console.log(targetBomToSubmit)
@@ -120,11 +107,57 @@ const SKUForm = ({setPageToDisplay, formAction, skuToDisplay, setSkuToDisplay, s
         //console.log('arrayOfSkus', arrayOfSkus)
 
         if (targetBomToSubmit.length === 0 || (arrayOfQuantities.every(el => el > 0) && !arrayOfSkus.includes(targetSku)) ) {
-            setTargetBomError(false)
+            return false
         } else {
+            return true
+        }
+    }
+
+    function handleSubmitButton() {
+        let hasError = false
+        
+        /*  TargetSKU error handling:
+            If update: validate that the targetSKU is equal to the original SKU to display
+            If create: validate that the targetSKU does not already exist in the SKUcatalog
+            For both, validate that the length of the targetSKu is not 0
+        */
+        if (checkSkuValidity()) {
+            setTargetSkuError(true)
+            hasError = true
+        } else {
+            setTargetSkuError(false)
+        }
+        /*  TargetDescription error handling
+            If update: validate that the target description is EITHER the same one that you are starting with or if it is different, it cannot be the same as any other description in the catalog
+            If create: validate that the descipriton is not the same as any other description in the catalog for both, validate that the length of the description is not 0
+        */
+        if (checkDescriptionValidity()) {
+            setTargetDescriptionError(true)
+            hasError = true
+        } else {
+            setTargetDescriptionError(false)
+        }
+
+        //TargetUnit error handling - unit cannot be blank
+        if (checkUnitValidity()) {
+            setTargetUnitError(true)
+            hasError = true
+        } else {
+            setTargetUnitError(false)
+        }
+
+        /*BOM error handling
+        Implement BOM error handling - BOM either has to be NULL OR every item in BOM has a quantity is greater than 0. 
+        */
+        if (checkBomValidity()) {
             setTargetBomError(true)
             hasError = true
+        } else {
+            setTargetBomError(false)
         }
+
+        let targetBomToSubmit = [...targetBom]
+        targetBomToSubmit.splice(targetBom.length - 1, 1)
 
         if (!hasError) {
             console.log("submitting form...")
@@ -192,8 +225,6 @@ const SKUForm = ({setPageToDisplay, formAction, skuToDisplay, setSkuToDisplay, s
         return uniqueUnitArrayOfObjects
     }
 
-    
-
     function getSkuCatalogArray(skuCatalog, targetBom) {
         let tempTargetBom = targetBom.map(sku => sku.SKU)
         //BOM Cant have one SKU multiple times. Cant have targetSku as a bomItem
@@ -201,7 +232,6 @@ const SKUForm = ({setPageToDisplay, formAction, skuToDisplay, setSkuToDisplay, s
         const selectOptionsArray = tempSkuCatalog.map(sku => ({label: sku.SKU, value: sku.SKU}))
         return selectOptionsArray
     }
-    //console.log(getSkuCatalogArray(skuCatalog))
 
     //Finds the description of a SKU from the SKucatalog and the SKU
     function handleDescriptionFind(bomLineSku, allSkus) {
@@ -236,14 +266,20 @@ const SKUForm = ({setPageToDisplay, formAction, skuToDisplay, setSkuToDisplay, s
                                         placeholder='SKU' 
                                         value={targetSku}
                                         onChange={(event) => setTargetSku(event.target.value)}
+                                        isInvalid={targetSkuError && checkSkuValidity()}
+                                        errorBorderColor={"Red"}
                                     />
+                                    {targetSkuError && checkSkuValidity() &&<Text align={"center"} m={2}>SKU can't be blank</Text>}
                                 </Td>
                                 <Td>
                                     <Input 
                                         placeholder='Item Description'
                                         value={targetDescription}
                                         onChange={(event) => setTargetDescription(event.target.value)}
+                                        isInvalid={targetDescriptionError && checkDescriptionValidity()}
+                                        errorBorderColor={"Red"}
                                     />
+                                    {targetDescriptionError && checkDescriptionValidity() && <Text align={"center"} m={2}>Item description can't be blank</Text>}
                                 </Td>
                                 <Td>
                                     <CreatableSelect
@@ -255,8 +291,10 @@ const SKUForm = ({setPageToDisplay, formAction, skuToDisplay, setSkuToDisplay, s
                                         styles={reactSelectStyles}
                                         menuPortalTarget={document.body}
                                         menuPosition={'fixed'}
-                                    
+                                        isInvalid={targetUnitError && checkUnitValidity()}
+                                        errorBorderColor={"Red"}
                                     />
+                                    {targetUnitError && checkUnitValidity() && <Text align={"center"} m={2}>Unit can't be blank</Text>}
                                 </Td>
                                 <Td>
                                     <Button colorScheme='red' m={2} onClick={() => handleCancelButton(formAction)}>Cancel</Button>
@@ -303,13 +341,17 @@ const SKUForm = ({setPageToDisplay, formAction, skuToDisplay, setSkuToDisplay, s
                                             onChange={value => handleNumberInputChange(bomLine.SKU, value)}
                                             precision={2} 
                                             step={1} 
-                                            min={0} >
+                                            min={0} 
+                                            isInvalid={targetBomError && bomLine.quantity === 0 && index !== targetBom.length - 1}
+                                            errorBorderColor={"Red"}
+                                            >
                                             <NumberInputField />
                                             <NumberInputStepper>
                                                 <NumberIncrementStepper />
                                                 <NumberDecrementStepper />
                                             </NumberInputStepper>
                                         </NumberInput>
+                                        {targetBomError && bomLine.quantity === 0 && index !== targetBom.length -1 && <Text m={2} align={"center"}>Quantity cannot be 0</Text>}
                                     </Td>
                                     <Td>{handleUnitFind(bomLine.SKU, skuCatalog)}</Td>
                                     <Td>
