@@ -21,12 +21,14 @@ import { useState } from 'react'
 import { useMount } from 'react-use'
 import { Select, CreatableSelect } from "chakra-react-select"
 import axios from 'axios'
+import skuService from '../../services/skus'
 
-const SKUForm = ({setPageToDisplay, formAction, skuToDisplay, skuCatalog, setSkuCatalog}) => {
+const SKUForm = ({setPageToDisplay, formAction, skuToDisplay, setSkuToDisplay, skuCatalog, setSkuCatalog}) => {
     
     // Establishes state variables
     
     //const [numberOfBOMItems, setNumberOfBOMItems] = useState(1)
+    const [skuId, setSkuId] = useState(null)
     const [targetSku, setTargetSku] = useState('')
     const [targetDescription, setTargetDescription] = useState('')
     const [targetUnit, setTargetUnit] = useState('')
@@ -48,6 +50,7 @@ const SKUForm = ({setPageToDisplay, formAction, skuToDisplay, skuCatalog, setSku
             let tempBom = []
             skuToDisplay.BOM.map((bomLine, index) => tempBom.splice(index, 0, {SKU: bomLine.SKU, quantity: bomLine.quantity}))
             setTargetBom([...tempBom, {"SKU": '', "quantity": 0}])
+            setSkuId(skuToDisplay.id)
         }
         
     })
@@ -70,7 +73,6 @@ const SKUForm = ({setPageToDisplay, formAction, skuToDisplay, skuCatalog, setSku
         
     }
 
-    //TODO: Implement submit for create/update to the server
     function handleSubmitButton() {
         let hasError = false
         
@@ -133,12 +135,13 @@ const SKUForm = ({setPageToDisplay, formAction, skuToDisplay, skuCatalog, setSku
                 BOM: targetBomToSubmit
             }
             //console.log(submissionObject)
-            //TODO: Use skuService here
             if (formAction === "createNewSku") {
-                axios.post("http://localhost:3001/skus", submissionObject).then(response => setSkuCatalog(skuCatalog.concat(response.data)))
+                skuService.create(submissionObject).then(newSku => setSkuCatalog(skuCatalog.concat(newSku))).catch(error => console.log(error))
                 setPageToDisplay("skuCatalog")
             } else if (formAction === "updateSku") {
-                
+                skuService.update(skuId, submissionObject).then(updatedSku => setSkuToDisplay(updatedSku)).catch(error => console.log(error))
+                setSkuCatalog(skuCatalog.map(sku => sku.id !== skuId ? sku : submissionObject))
+                setPageToDisplay("skuDetails")
             }
 
         } else {
