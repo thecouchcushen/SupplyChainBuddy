@@ -66,7 +66,8 @@ const Suppliers = ({suppliers}) => {
             <Supplier key={"Supplier" + supplier.description} supplier={supplier} />
         )
     */
-
+    //TODO: Form for new Supplier
+    //TODO: Supplier details page that has all of the POs (open, closed) for the supplier
     
     return (
         

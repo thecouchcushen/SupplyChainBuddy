@@ -9,13 +9,20 @@ import {
     TableCaption,
     TableContainer,
     Button,
+    Input
   } from '@chakra-ui/react'
+import { useState } from 'react'
 import skuService from '../../services/skus'
 
 //TODO: Only display 10 skus at a time, implement navigation between pages
-//TODO: Implement filtering
 const SKUTable = ({skusInTable, detailButtonPressed, formDisplayHandler, pageToDisplay, setPageToDisplay, warehouses, pos, skuCatalog, setSkuCatalog}) => {
     
+  const [skuFilter, setSkuFilter] = useState('')
+  const [descriptionFilter, setDescriptionFilter] = useState('')
+  const [unitFilter, setUnitFilter] = useState('')
+
+
+
   function skuInWarehouse(sku, warehouse) {
     return (warehouse.inventoryLevels.filter(skuInInventory => skuInInventory.SKU === sku).length > 0)
   }
@@ -54,7 +61,7 @@ const SKUTable = ({skusInTable, detailButtonPressed, formDisplayHandler, pageToD
       return [false, []]
     }
   }
-  //TODO: Alert user as to what PO/Warehouse/BOM this sku is contained in if it cannot be deleted. Variables are already produced in checkDeletability
+
   function checkDeletability(sku, warehouses, pos, skuCatalog) {
     let [inWarehouses, warehousesContaining] = includedInWarehouse(sku, warehouses)
     let [inPos, posContaining] = includedInPos(sku, pos)
@@ -66,7 +73,7 @@ const SKUTable = ({skusInTable, detailButtonPressed, formDisplayHandler, pageToD
       return true
     }
   }
-
+  //TODO: Finish implementing deletability checking and error handling? did I finish this already?
   function deleteSku(sku, skuCatalog, setSkuCatalog) {
     skuService.del(sku.id).then(response => response.data).catch(error => console.log(error))
     setSkuCatalog(skuCatalog.filter(catalogSku => catalogSku.id !== sku.id))
@@ -85,19 +92,46 @@ const SKUTable = ({skusInTable, detailButtonPressed, formDisplayHandler, pageToD
             return (
               <div>
                 <Button colorScheme='blue' m={2} onClick={() => formDisplayHandler()}>Edit</Button>
-                {/*
-                Only delete if not included in BOM of other goods, no outstanding POs, and not included in any warehouses
-                */}
                 <Button 
                   colorScheme='red' 
                   m={2}
-                  onClick={() => checkDeletability(skusInTable[0].SKU,warehouses, pos, skuCatalog) ? deleteSku(skusInTable[0], skuCatalog, setSkuCatalog) : alert("Error cannot delete: This SKU is either included in the BOM of another good, contained in an outstanding PO, or included in a warehouse's inventory")}
+                  onClick={() => checkDeletability(skusInTable[0].SKU,warehouses, pos, skuCatalog) ? deleteSku(skusInTable[0], skuCatalog, setSkuCatalog) : alert("Cannot delete this SKU if it is included in the BOM of another good, contained in an outstanding PO, or currently included in a warehouse's inventory")}
                   >
                     Delete
                   </Button>
                 </div>
             )
         }
+    }
+
+    function handleFilterDisp() {
+      if (pageToDisplay === "skuCatalog") {
+        return (
+          <Tr>
+                <Th>
+                  <Input
+                    placeholder='Filter SKUs'
+                    value={skuFilter}
+                    onChange={(event) => setSkuFilter(event.target.value)}
+                  />
+                </Th>
+                <Th>
+                  <Input
+                    placeholder='Filter Descriptions'
+                    value={descriptionFilter}
+                    onChange={(event) => setDescriptionFilter(event.target.value)}
+                  />
+                </Th>
+                <Th>
+                  <Input
+                    placeholder='Filter by unit'
+                    value={unitFilter}
+                    onChange={(event) => setUnitFilter(event.target.value)}
+                  />
+                </Th>
+              </Tr>
+        )
+      }
     }
 
     return (
@@ -111,9 +145,10 @@ const SKUTable = ({skusInTable, detailButtonPressed, formDisplayHandler, pageToD
                 <Th>Unit</Th>
                 <Th>Details</Th>
               </Tr>
+              {handleFilterDisp()}
             </Thead>
             <Tbody>
-              {skusInTable.filter(sku => sku.SKU !== '').map((sku, i) => 
+              {skusInTable.filter(sku => sku.SKU.toLowerCase().includes(skuFilter.toLowerCase())).filter(sku => sku.description.toLowerCase().includes(descriptionFilter.toLowerCase())).filter(sku => sku.units.toLowerCase().includes(unitFilter.toLowerCase())).map((sku, i) => 
               <Tr key={sku.description + "CatalogEntry"}>
                 <Td>{sku.SKU}</Td>
                 <Td>{sku.description}</Td>
